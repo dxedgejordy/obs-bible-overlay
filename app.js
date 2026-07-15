@@ -1,8 +1,6 @@
-// Conexión con Firestore
 import { db } from "./firebase-config.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// Cargar versículo del día
 async function cargarVersiculo() {
     try {
         const referencia = doc(db, "versiculos", "dia");
@@ -24,5 +22,4 @@ async function cargarVersiculo() {
     }
 }
 
-// Ejecutar al abrir la app
 cargarVersiculo();
