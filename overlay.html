@@ -43,9 +43,17 @@ text-shadow:2px 2px 8px black;
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
+  ...
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.db = db;
 apiKey: "AIzaSyCGfA21fXLS-DNmr988sc-prxvMV1o_14A",
 authDomain: "biblia-jnf.firebaseapp.com",
 projectId: "biblia-jnf",
@@ -59,11 +67,6 @@ initializeApp(firebaseConfig);
 </script>
 
 </head>
-<div id="ref"></div>
-
-<div id="txt"></div>
-
-<script type="module" src="app.js"></script>
 <body>
 
 <div id="box">
