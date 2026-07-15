@@ -1,60 +1,28 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  onSnapshot
-} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+// Conexión con Firestore
+import { db } from "./firebase-config.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCGfA21fXLS-DNmr988sc-prxvMV1o_14A",
-  authDomain: "biblia-jnf.firebaseapp.com",
-  projectId: "biblia-jnf",
-  storageBucket: "biblia-jnf.firebasestorage.app",
-  messagingSenderId: "1092166350928",
-  appId: "1:1092166350928:web:2c0c660eb0e6b1746eb955"
-};
+// Cargar versículo del día
+async function cargarVersiculo() {
+    try {
+        const referencia = doc(db, "versiculos", "dia");
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+        const resultado = await getDoc(referencia);
 
-// ----------- CONTROL -----------
+        if (resultado.exists()) {
+            const datos = resultado.data();
 
-const btn = document.getElementById("enviar");
+            document.getElementById("versiculo").innerHTML = datos.texto;
+            document.getElementById("referencia").innerHTML = datos.referencia;
 
-if (btn) {
+        } else {
+            console.log("No existe el versículo del día");
+        }
 
-  btn.onclick = async () => {
-
-    const referencia = document.getElementById("referencia").value;
-    const texto = document.getElementById("versiculo").value;
-
-    await setDoc(doc(db, "overlay", "current"), {
-      referencia,
-      texto
-    });
-
-    alert("Versículo enviado");
-  };
-
+    } catch (error) {
+        console.error("Error cargando versículo:", error);
+    }
 }
 
-// ----------- OVERLAY -----------
-
-const ref = document.getElementById("ref");
-const txt = document.getElementById("txt");
-
-if (ref && txt) {
-
-  onSnapshot(doc(db, "overlay", "current"), (d) => {
-
-    const data = d.data();
-
-    if (!data) return;
-
-    ref.innerHTML = data.referencia;
-    txt.innerHTML = data.texto;
-
-  });
-
-}
+// Ejecutar al abrir la app
+cargarVersiculo();
